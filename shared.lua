@@ -25,3 +25,30 @@ Shared = {
         end
     end
 }
+
+Debug = {
+    ---@return nil
+    ---@param text string|number The text that needs to be printed
+    ---@param bypass boolean If Config.debug should be bypassed
+    success = function (text, bypass)
+        if Config.debug or bypass then
+            return print("[^2SUCCESS^0] "..tostring(text))
+        end
+    end,
+    ---@return nil
+    ---@param text string|number The text that needs to be printed
+    ---@param bypass boolean If Config.debug should be bypassed
+    info = function (text, bypass)
+        if Config.debug or bypass then
+            return print("[^3INFO^0] "..tostring(text))
+        end
+    end,
+    ---@return nil
+    ---@param text string|number The text that needs to be printed
+    ---@param bypass boolean If Config.debug should be bypassed
+    error = function (text, bypass)
+        if Config.debug or bypass then
+            return print("[^1ERROR^0] "..tostring(text))
+        end
+    end
+}
