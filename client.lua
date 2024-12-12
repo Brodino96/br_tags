@@ -10,8 +10,9 @@ end
 ---@return boolean|nil
 ---@param name string Name of the tag
 local function hasTag(name)
+
     if not Shared.type(name, "string") then
-        return nil
+        return
     end
 
     for i = 1, #Tags do
