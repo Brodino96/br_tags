@@ -1,21 +1,20 @@
 
 ---Returns the list of all the tags the player has
----@return table
----@param id number|string The serverId of the player
+---@param id integer? The serverId of the player
+---@return table|nil
 function FetchTags(id)
 
     ---@diagnostic disable-next-line: undefined-global
     local tags = MySQL.scalar.await("SELECT `br_tags` FROM `users` WHERE `identifier` = ? LIMIT 1", { ESX.GetPlayerFromId(id).getIdentifier() })
 
     if not tags then
-        Debug.error("Function 'FetchTags': unable to return the tags for id ["..id.."]", true, debug.getinfo(1).currentline)
-        return {}
+        return Debug.error("Function 'FetchTags': unable to return the tags for id ["..id.."]", true, debug.getinfo(1).currentline)
     end
     return json.decode(tags)
 end
 
 ---Updated the database with the new tags
----@param playerId integer Player's id
+---@param playerId integer? Player's id
 ---@return nil
 function UpdateTags(playerId)
 
