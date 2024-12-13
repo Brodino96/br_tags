@@ -23,8 +23,8 @@ local function addTag(id, name)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string") then
-        return Debug.error("Function: 'addTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
+    if not Shared.type(name, "string") or not Shared.type(playerId, "number") then
+        return Debug.error(string.format("Function: 'addTag': was expecting [string] & [number], got [%s] & [%s]", type(name), type(id)), true, debug.getinfo(1).currentline)
     end
 
     if not Tags[playerId] then
@@ -51,8 +51,8 @@ local function removeTag(id, name)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string") then
-        return Debug.error("Function: 'removeTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
+    if not Shared.type(name, "string") or not Shared.type(playerId, "number") then
+        return Debug.error(string.format("Function: 'removeTag': was expecting [string] & [number], got [%s] & [%s]", type(name), type(id)), true, debug.getinfo(1).currentline)
     end
 
     if not Tags[playerId] then
@@ -73,10 +73,14 @@ end
 
 ---Returns the list of tag of the player
 ---@param id integer Player's id
----@return table
+---@return table?
 local function getTags(id)
 
     local playerId = math.tointeger(id)
+
+    if not Shared.type(playerId, "number") then
+        return Debug.error(string.format("Function: 'getTags': was expecting [number], got [%s]", type(id)), true, debug.getinfo(1).currentline)
+    end
 
     if not Tags[playerId] then
         Debug.info("Function: 'getTags': player ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
@@ -94,8 +98,8 @@ local function hasTag(id, name)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string") then
-        return Debug.error("Function: 'hasTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
+    if not Shared.type(name, "string") or not Shared.type(playerId, "number") then
+        return Debug.error(string.format("Function: 'hasTag': was expecting [string] & [number], got [%s] & [%s]", type(name), type(id)), true, debug.getinfo(1).currentline)
     end
 
     local playerTags = Tags[playerId]
