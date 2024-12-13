@@ -33,7 +33,7 @@ Debug = {
     ---@param line integer Current line of code
     success = function (text, bypass, line)
         if Config.debug or bypass then
-            return print(line.."[^2SUCCESS at line ^0"..line.."] "..tostring(text))
+            return print("[^2SUCCESS at line ^0"..line.."] "..tostring(text))
         end
     end,
     ---@return nil
@@ -42,7 +42,7 @@ Debug = {
     ---@param line integer Current line of code
     info = function (text, bypass, line)
         if Config.debug or bypass then
-            return print(line.."[^3INFO at line ^0"..line.."] "..tostring(text))
+            return print("[^3INFO at line ^0"..line.."] "..tostring(text))
         end
     end,
     ---@return nil
@@ -51,7 +51,7 @@ Debug = {
     ---@param line integer Current line of code
     error = function (text, bypass, line)
         if Config.debug or bypass then
-            return print(line.."[^1ERROR at line ^0"..line.."] "..tostring(text))
+            return print("[^1ERROR at line ^0"..line.."] "..tostring(text))
         end
     end
 }
