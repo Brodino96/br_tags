@@ -1,3 +1,3 @@
 ALTER TABLE `users`
-    ADD COLUMN `br_tags` LONGTEXT NULL
+    ADD COLUMN `br_tags` LONGTEXT DEFAULT "[]"
 ;
