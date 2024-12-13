@@ -1,3 +1,4 @@
+---@diagnostic disable: need-check-nil
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 ESX = exports["es_extended"]:getSharedObject()
@@ -7,16 +8,20 @@ local undefined
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 ---Sends a new set of tags to the client
----@param playerId integer Player's id
+---@param playerId integer? Player's id
 ---@return nil
 function SyncTags(playerId)
+    ---@diagnostic disable-next-line: param-type-mismatch
     TriggerClientEvent("br_tags:syncTags", playerId, Tags[playerId])
 end
 
 ---Add a new tag the the specified player
----@param playerId integer Player's id
+---@param id integer Player's id
 ---@param name string The tags name
-local function addTag(playerId, name)
+---@return nil
+local function addTag(id, name)
+
+    local playerId = math.tointeger(id)
 
     if not Shared.type(name, "string") then
         return Debug.error("Function: 'addTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
@@ -27,12 +32,24 @@ local function addTag(playerId, name)
         Tags[playerId] = FetchTags(playerId)
     end
 
-    Tags[#Tags+1] = name
+    for i = 1, #Tags[playerId] do
+        if Tags[playerId][i] == name then
+            return Debug.error("Function: 'addTag': player ["..tostring(playerId).."] already has the tag ["..name.."]", true, debug.getinfo(1).currentline)
+        end
+    end
+
+    Tags[playerId][#Tags[playerId]+1] = name
 
     UpdateTags(playerId)
 end
 
-local function removeTag(playerId, name)
+---Removes the specified tag from the specified id
+---@param id integer Player's id
+---@param name string Tag's name
+---@return nil
+local function removeTag(id, name)
+
+    local playerId = math.tointeger(id)
 
     if not Shared.type(name, "string") then
         return Debug.error("Function: 'removeTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
@@ -55,9 +72,11 @@ end
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 ---Returns the list of tag of the player
+---@param id integer Player's id
 ---@return table
----@param playerId integer Player's id
-local function getTags(playerId)
+local function getTags(id)
+
+    local playerId = math.tointeger(id)
 
     if not Tags[playerId] then
         Debug.info("Function: 'getTags': player ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
@@ -68,10 +87,12 @@ local function getTags(playerId)
 end
 
 ---Returns if the player has the specified tag
----@return boolean|nil
----@param playerId integer Player's id
+---@param id integer Player's id
 ---@param name string Tag's name
-local function hasTag(playerId, name)
+---@return boolean?
+local function hasTag(id, name)
+
+    local playerId = math.tointeger(id)
 
     if not Shared.type(name, "string") then
         return Debug.error("Function: 'hasTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
@@ -95,9 +116,21 @@ end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
-RegisterCommand("tags", function (source, args)
+RegisterCommand("brtags", function (source, args)
     local id = args[1] or source
     print(json.encode(getTags(id)))
+end, false)
+
+RegisterCommand("addtags", function (source, args)
+    addTag(args[1], args[2])
+end, false)
+
+RegisterCommand("removetag", function (source, args)
+    removeTag(args[1], args[2])
+end, false)
+
+RegisterCommand("test", function ()
+    print(json.encode(Tags))
 end, false)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
