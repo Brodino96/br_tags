@@ -95,6 +95,13 @@ end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
+RegisterCommand("tags", function (source, args)
+    local id = args[1] or source
+    print(json.encode(getTags(id)))
+end, false)
+
+------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
+
 exports("has", hasTag)
 exports("add", addTag)
 exports("remove", removeTag)
