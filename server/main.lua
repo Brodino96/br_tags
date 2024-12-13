@@ -69,9 +69,9 @@ end
 
 ---Returns if the player has the specified tag
 ---@return boolean|nil
----@param name string Tag's name
 ---@param playerId integer Player's id
-local function hasTag(name, playerId)
+---@param name string Tag's name
+local function hasTag(playerId, name)
 
     if not Shared.type(name, "string") then
         return Debug.error("Function: 'hasTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
@@ -95,9 +95,8 @@ end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
-exports("getTags", getTags)
-exports("hasTag", hasTag)
-exports("addTag", addTag)
-exports("removeTag", removeTag)
+exports("has", hasTag)
+exports("add", addTag)
+exports("remove", removeTag)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
