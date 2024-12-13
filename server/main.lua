@@ -9,10 +9,12 @@ Tags = {}
 ---@return table|nil
 ---@param playerId integer|string Player's id
 local function getTags(playerId)
-    if Tags[playerId] then
-        return Tags[playerId]
+
+    if not Tags[playerId] then
+        Tags[playerId] = FetchTags(playerId)
     end
-    return print("The players somehow doesn't have any tags THIS IS AN ERROR")
+
+    return Tags[playerId]
 end
 
 ---Returns if the player has the specified tag
