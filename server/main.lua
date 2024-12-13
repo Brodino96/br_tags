@@ -2,16 +2,65 @@
 
 ESX = exports["es_extended"]:getSharedObject()
 Tags = {}
+local undefined
+
+------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
+
+---Sends a new set of tags to the client
+---@param playerId integer Player's id
+---@return nil
+function SyncTags(playerId)
+    TriggerClientEvent("br_tags:syncTags", playerId, Tags[playerId])
+end
+
+---Add a new tag the the specified player
+---@param playerId integer Player's id
+---@param name string The tags name
+local function addTag(playerId, name)
+
+    if not Shared.type(name, "string") then
+        return Debug.error("Function: 'addTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
+    end
+
+    if not Tags[playerId] then
+        Debug.info("Function: 'addTag': player ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
+        Tags[playerId] = FetchTags(playerId)
+    end
+
+    Tags[#Tags+1] = name
+
+    UpdateTags(playerId)
+end
+
+local function removeTag(playerId, name)
+
+    if not Shared.type(name, "string") then
+        return Debug.error("Function: 'removeTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
+    end
+
+    if not Tags[playerId] then
+        Debug.info("Function: 'removeTag': player ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
+        Tags[playerId] = FetchTags(playerId)
+    end
+
+    for i = 1, #Tags[playerId] do
+        if Tags[playerId][i] == name then
+            Tags[playerId][i] = undefined
+        end
+    end
+
+    UpdateTags(playerId)
+end
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 ---Returns the list of tag of the player
 ---@return table
----@param playerId integer|string Player's id
+---@param playerId integer Player's id
 local function getTags(playerId)
 
     if not Tags[playerId] then
-        Debug.info("Player: ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false)
+        Debug.info("Function: 'getTags': player ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
         Tags[playerId] = FetchTags(playerId)
     end
 
@@ -21,11 +70,11 @@ end
 ---Returns if the player has the specified tag
 ---@return boolean|nil
 ---@param name string Tag's name
----@param playerId integer|string Player's id
+---@param playerId integer Player's id
 local function hasTag(name, playerId)
 
     if not Shared.type(name, "string") then
-        return Debug.error("Tag name should be a string, a ["..type(name).."] was passed", true)
+        return Debug.error("Function: 'hasTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
     end
 
     local playerTags = Tags[playerId]
@@ -48,5 +97,7 @@ end)
 
 exports("getTags", getTags)
 exports("hasTag", hasTag)
+exports("addTag", addTag)
+exports("removeTag", removeTag)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
