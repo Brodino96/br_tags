@@ -11,6 +11,7 @@ Tags = {}
 local function getTags(playerId)
 
     if not Tags[playerId] then
+        Debug.info("Player: ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false)
         Tags[playerId] = FetchTags(playerId)
     end
 
@@ -24,7 +25,7 @@ end
 local function hasTag(name, playerId)
 
     if not Shared.type(name, "string") then
-        return
+        return Debug.error("Tag name should be a string, a ["..type(name).."] was passed", false)
     end
 
     local playerTags = Tags[playerId]
@@ -35,25 +36,6 @@ local function hasTag(name, playerId)
     end
     return false
 end
-
------------------------- # ------------------------ # ------------------------ # ------------------------ # ------------------------
-
-AddEventHandler("onResourceStart", function (name)
-    if name ~= GetCurrentResourceName() then
-        return
-    end
-
-    local allPlayers = GetPlayers()
-    for i = 1, #allPlayers do
-        Tags[allPlayers[i]] = FetchTags(allPlayers[i])
-    end
-end)
-
-RegisterNetEvent("esx:playerLoaded")
-AddEventHandler("esx:playerLoaded", function (id)
-    Tags[id] = FetchTags(id)
-    TriggerClientEvent("br_tags:syncTags", id, Tags[id])
-end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
