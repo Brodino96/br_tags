@@ -30,25 +30,28 @@ Debug = {
     ---@return nil
     ---@param text string|number The text that needs to be printed
     ---@param bypass boolean If Config.debug should be bypassed
-    success = function (text, bypass)
+    ---@param line integer Current line of code
+    success = function (text, bypass, line)
         if Config.debug or bypass then
-            return print("[^2SUCCESS^0] "..tostring(text))
+            return print(line.."[^2SUCCESS at line ^0"..line.."] "..tostring(text))
         end
     end,
     ---@return nil
     ---@param text string|number The text that needs to be printed
     ---@param bypass boolean If Config.debug should be bypassed
-    info = function (text, bypass)
+    ---@param line integer Current line of code
+    info = function (text, bypass, line)
         if Config.debug or bypass then
-            return print("[^3INFO^0] "..tostring(text))
+            return print(line.."[^3INFO at line ^0"..line.."] "..tostring(text))
         end
     end,
     ---@return nil
     ---@param text string|number The text that needs to be printed
     ---@param bypass boolean If Config.debug should be bypassed
-    error = function (text, bypass)
+    ---@param line integer Current line of code
+    error = function (text, bypass, line)
         if Config.debug or bypass then
-            return print("[^1ERROR^0] "..tostring(text))
+            return print(line.."[^1ERROR at line ^0"..line.."] "..tostring(text))
         end
     end
 }
