@@ -25,7 +25,7 @@ function UpdateTags(playerId)
 
     ---@diagnostic disable-next-line: undefined-global
     local response = MySQL.update.await("UPDATE users SET tags = ? WHERE identifier = ?", {
-        Tags[playerId], ESX.GetPlayerFromId(playerId).getIdentifier()
+        json.encode(Tags[playerId]), ESX.GetPlayerFromId(playerId).getIdentifier()
     })
 
     if not response then
