@@ -5,7 +5,7 @@
 function FetchTags(id)
 
     ---@diagnostic disable-next-line: undefined-global
-    local tags = MySQL.scalar.await("SELECT `tags` FROM `users` WHERE `identifier` = ? LIMIT 1", { ESX.GetPlayerFromId(id).getIdentifier() })
+    local tags = MySQL.scalar.await("SELECT `br_tags` FROM `users` WHERE `identifier` = ? LIMIT 1", { ESX.GetPlayerFromId(id).getIdentifier() })
 
     if not tags then
         Debug.error("Function 'FetchTags': unable to return the tags for id ["..id.."]", true, debug.getinfo(1).currentline)
@@ -24,7 +24,7 @@ function UpdateTags(playerId)
     end
 
     ---@diagnostic disable-next-line: undefined-global
-    local response = MySQL.update.await("UPDATE users SET tags = ? WHERE identifier = ?", {
+    local response = MySQL.update.await("UPDATE users SET br_tags = ? WHERE identifier = ?", {
         json.encode(Tags[playerId]), ESX.GetPlayerFromId(playerId).getIdentifier()
     })
 
