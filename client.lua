@@ -13,16 +13,6 @@ end
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
----Returns the list of all the tags for this player
----@return table
-local function getTags()
-    if not Tags then
-        Debug.info("Function: 'getTags': didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
-        Tags = fetchTags()
-    end
-    return Tags
-end
-
 ---Returns true if the player has the specified tag
 ---@return boolean|nil
 ---@param name string Name of the tag
@@ -54,7 +44,6 @@ end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
-exports("getTags", getTags)
-exports("hasTag", hasTag)
+exports("has", hasTag)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
