@@ -6,7 +6,7 @@ Tags = {}
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 ---Returns the list of tag of the player
----@return table|nil
+---@return table
 ---@param playerId integer|string Player's id
 local function getTags(playerId)
 
@@ -25,7 +25,7 @@ end
 local function hasTag(name, playerId)
 
     if not Shared.type(name, "string") then
-        return Debug.error("Tag name should be a string, a ["..type(name).."] was passed", false)
+        return Debug.error("Tag name should be a string, a ["..type(name).."] was passed", true)
     end
 
     local playerTags = Tags[playerId]
@@ -36,6 +36,13 @@ local function hasTag(name, playerId)
     end
     return false
 end
+
+------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
+
+---@diagnostic disable-next-line: undefined-global
+lib.callback.register("br_tags:getTags", function (source)
+    return getTags(source)
+end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
