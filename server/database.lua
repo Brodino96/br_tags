@@ -11,5 +11,5 @@ function FetchTags(id)
         Debug.error("Unable to fetch the tags for id ["..id.."]", true)
         return {}
     end
-    return tags
+    return json.decode(tags)
 end
