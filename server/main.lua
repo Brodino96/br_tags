@@ -62,7 +62,7 @@ local function removeTag(id, name)
 
     for i = 1, #Tags[playerId] do
         if Tags[playerId][i] == name then
-            Tags[playerId][i] = undefined
+            table.remove(Tags[playerId], i)
         end
     end
 
