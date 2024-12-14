@@ -18,8 +18,8 @@ end
 ---@param name string Name of the tag
 local function hasTag(name)
 
-    if not Shared.type(name, "string") then
-        return Debug.error("Function: 'hasTag': tag name should be a string, parameter with type ["..type(name).."] was passed", true, debug.getinfo(1).currentline)
+    if not Shared.type(name, "string", "hasTag") then
+        return
     end
 
     if not Tags then

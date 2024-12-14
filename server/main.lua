@@ -3,7 +3,6 @@
 
 ESX = exports["es_extended"]:getSharedObject()
 Tags = {}
-local undefined
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
@@ -15,16 +14,16 @@ function SyncTags(playerId)
     TriggerClientEvent("br_tags:syncTags", playerId, Tags[playerId])
 end
 
----Add a new tag the the specified player
----@param id integer Player's id
+---Adds a new tag the the specified player
+---@param id integer? Player's id
 ---@param name string The tags name
 ---@return nil
 local function addTag(id, name)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string") or not Shared.type(playerId, "number") then
-        return Debug.error(string.format("Function: 'addTag': was expecting [string] & [number], got [%s] & [%s]", type(name), type(id)), true, debug.getinfo(1).currentline)
+    if not Shared.type(name, "string", "addTag") or not Shared.type(playerId, "number", "addTag") then
+        return
     end
 
     if not Tags[playerId] then
@@ -51,8 +50,8 @@ local function removeTag(id, name)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string") or not Shared.type(playerId, "number") then
-        return Debug.error(string.format("Function: 'removeTag': was expecting [string] & [number], got [%s] & [%s]", type(name), type(id)), true, debug.getinfo(1).currentline)
+    if not Shared.type(name, "string", "removeTag") or not Shared.type(playerId, "number", "removeTag") then
+        return
     end
 
     if not Tags[playerId] then
@@ -78,8 +77,8 @@ local function getTags(id)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(playerId, "number") then
-        return Debug.error(string.format("Function: 'getTags': was expecting [number], got [%s]", type(id)), true, debug.getinfo(1).currentline)
+    if not Shared.type(playerId, "number", "getTags") then
+        return
     end
 
     if not Tags[playerId] then
@@ -98,8 +97,8 @@ local function hasTag(id, name)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string") or not Shared.type(playerId, "number") then
-        return Debug.error(string.format("Function: 'hasTag': was expecting [string] & [number], got [%s] & [%s]", type(name), type(id)), true, debug.getinfo(1).currentline)
+    if not Shared.type(name, "string", "hasTag") or not Shared.type(playerId, "number", "hasTag") then
+        return
     end
 
     local playerTags = Tags[playerId]
@@ -117,25 +116,6 @@ end
 lib.callback.register("br_tags:getTags", function (source)
     return getTags(source)
 end)
-
------------------------- # ------------------------ # ------------------------ # ------------------------ # ------------------------
-
-RegisterCommand("brtags", function (source, args)
-    local id = args[1] or source
-    print(json.encode(getTags(id)))
-end, false)
-
-RegisterCommand("addtags", function (source, args)
-    addTag(args[1], args[2])
-end, false)
-
-RegisterCommand("removetag", function (source, args)
-    removeTag(args[1], args[2])
-end, false)
-
-RegisterCommand("test", function ()
-    print(json.encode(Tags))
-end, false)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
