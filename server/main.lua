@@ -119,6 +119,21 @@ end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
+---Checks if the player is allowed to use commands
+---@param id integer Player's id
+---@return boolean
+local function isAllowed(id)
+    return true
+end
+
+RegisterCommand("tagsmenu", function (source)
+    if isAllowed(source) then
+        TriggerClientEvent("br_tags:openMenu", source)
+    end
+end, false)
+
+------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
+
 exports("has", hasTag)
 exports("add", addTag)
 exports("remove", removeTag)

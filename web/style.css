@@ -1,0 +1,62 @@
+/* ------------------------------------------- */
+
+#main_container {
+    width: 1600px;
+    height: 900px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    
+    background: linear-gradient(90deg, #2f2e36 17%, #293442 100%);
+    border-radius: 25px;
+}
+
+.generic_text {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+}
+
+/* ------------------------------------------- */
+
+#player_list {
+    width: 25%;
+    height: 100%;
+    position: absolute;
+    left: 0%;
+
+    background: black;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+/* ------------------------------------------- */
+
+#divider {
+    width: 3px;
+    height: 95%;
+    position: absolute;
+    left: 25%;
+    top: 50%;
+    transform: translate(-25%, -50%);
+
+    background: red;
+    border-radius: 2px;
+}
+
+/* ------------------------------------------- */
+
+#tag_list {
+    width: 74%;
+    height: 100%;
+    position: absolute;
+    left: 26%;
+}
+
+#player_name {
+    font-size: 50px;
+    padding-top: 50px;
+}
+
+
+/* ------------------------------------------- */
