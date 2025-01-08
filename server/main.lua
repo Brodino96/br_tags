@@ -6,6 +6,20 @@ Tags = {}
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
+---Checks if the specified tag is usable
+---@param tag string The tag's name
+---@return boolean
+local function isTagAllowed(tag)
+    for i = 1, #Config.allowedTags do
+        if tag == Config.allowedTags[i] then
+            return true
+        end
+    end
+    return false
+end
+
+------------------------ # ------------------------ # ------------------------ # ------------------------
+
 ---Sends a new set of tags to the client
 ---@param playerId integer? Player's id
 ---@return nil
@@ -20,9 +34,13 @@ end
 ---@return nil
 local function addTag(id, name)
 
+    if not isTagAllowed(name) then
+        return Debug.error("Function: 'addTag': the tag ["..tostring(name).."] is not allowed", true, debug.getinfo(1).currentline)
+    end
+
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string", "addTag") or not Shared.type(playerId, "number", "addTag") then
+    if not Shared.type(playerId, "number", "addTag") then
         return
     end
 
@@ -48,9 +66,13 @@ end
 ---@return nil
 local function removeTag(id, name)
 
+    if not isTagAllowed(name) then
+        return Debug.error("Function: 'removeTag': the tag ["..tostring(name).."] is not allowed", true, debug.getinfo(1).currentline)
+    end
+
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string", "removeTag") or not Shared.type(playerId, "number", "removeTag") then
+    if not Shared.type(playerId, "number", "removeTag") then
         return
     end
 
