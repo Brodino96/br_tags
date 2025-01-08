@@ -1,4 +1,3 @@
-
 ---Returns the list of all the tags the player has
 ---@param id integer? The serverId of the player
 ---@return table|nil
@@ -15,21 +14,17 @@ end
 ---Updated the database with the new tags
 ---@param playerId integer? Player's id
 ---@return nil
-function UpdateTags(playerId)
-
-    if not Tags[playerId] then
-        return Debug.error("Function 'UpdateTags': the specified player didn't have any locally saved tags", true, debug.getinfo(1).currentline)
-    end
+function UpdateTags(playerId, tags)
 
     local response = MySQL.update.await("UPDATE users SET br_tags = ? WHERE identifier = ?", {
-        json.encode(Tags[playerId]), ESX.GetPlayerFromId(playerId).getIdentifier()
+        json.encode(tags), ESX.GetPlayerFromId(playerId).getIdentifier()
     })
 
     if not response then
         return Debug.error("Function 'UpdateTags': no response was given from the database", true, debug.getinfo(1).currentline)
     end
 
-    SyncTags(playerId)
+    SyncTags(playerId, tags)
 end
 
 ---Fetches the user info to be used in the menu

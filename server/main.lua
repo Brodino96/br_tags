@@ -2,7 +2,6 @@
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 ESX = exports["es_extended"]:getSharedObject()
-Tags = {}
 local nTags = #Config.allowedTags
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
@@ -27,9 +26,10 @@ end
 ---Sends a new set of tags to the client
 ---@param playerId integer? Player's id
 ---@return nil
-function SyncTags(playerId)
+function SyncTags(playerId, tags)
     ---@diagnostic disable-next-line: param-type-mismatch
-    TriggerClientEvent("br_tags:syncTags", playerId, Tags[playerId])
+    TriggerClientEvent("br_tags:syncTags", playerId, tags)
+    print("aaaaaaaaa")
 end
 
 ---Adds a new tag the the specified player
@@ -48,20 +48,17 @@ local function addTag(id, name)
         return
     end
 
-    if not Tags[playerId] then
-        Debug.info("Function: 'addTag': player ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
-        Tags[playerId] = FetchTags(playerId)
-    end
+    local tags = FetchTags(playerId)
 
-    for i = 1, #Tags[playerId] do
-        if Tags[playerId][i] == name then
+    for i = 1, #tags do
+        if tags[i] == name then
             return Debug.error("Function: 'addTag': player ["..tostring(playerId).."] already has the tag ["..name.."]", true, debug.getinfo(1).currentline)
         end
     end
 
-    Tags[playerId][#Tags[playerId]+1] = name
+    tags[#tags+1] = name
 
-    UpdateTags(playerId)
+    UpdateTags(playerId, tags)
 end
 
 ---Removes the specified tag from the specified id
@@ -76,37 +73,28 @@ local function removeTag(id, name)
         return
     end
 
-    if not Tags[playerId] then
-        Debug.info("Function: 'removeTag': player ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
-        Tags[playerId] = FetchTags(playerId)
-    end
+    local tags = FetchTags(playerId)
+    if tags == nil then return end
 
-    for i = 1, #Tags[playerId] do
-        if Tags[playerId][i] == name then
-            table.remove(Tags[playerId], i)
+    for i = 1, #tags do
+        if tags[i] == name then
+            table.remove(tags, i)
         end
     end
 
-    UpdateTags(playerId)
+    UpdateTags(playerId, tags)
 end
 
 ---Returns the list of tag of the player
 ---@param id integer Player's id
 ---@return table?
 local function getTags(id)
-
     local playerId = math.tointeger(id)
 
     if not Shared.type(playerId, "number", "getTags") then
         return
     end
-
-    if not Tags[playerId] then
-        Debug.info("Function: 'getTags': player ["..tostring(playerId).."] didn't have any tag stored locally, fetching from database", false, debug.getinfo(1).currentline)
-        Tags[playerId] = FetchTags(playerId)
-    end
-
-    return Tags[playerId]
+    return FetchTags(playerId)
 end
 
 ---Returns if the player has the specified tag
@@ -121,9 +109,9 @@ local function hasTag(id, name)
         return
     end
 
-    local playerTags = Tags[playerId]
-    for i = 1, #playerTags do
-        if playerTags[i] == name then
+    local tags = FetchTags(playerId)
+    for i = 1, #tags do
+        if tags[i] == name then
             return true
         end
     end
@@ -140,13 +128,13 @@ end)
 
 local function init(serverId)
     local id = math.tointeger(serverId)
-    Tags[id] = FetchTags(id)
+    local tags = FetchTags(id)
 
-    for i = 1, #Tags[id] do
-        if not isTagAllowed(Tags[id][i]) then
+    for i = 1, #tags do
+        if not isTagAllowed(tags[i]) then
             ---@diagnostic disable-next-line: param-type-mismatch
-            Debug.info("Removed tag ["..Tags[id][i].."] from player ["..tostring(id).."]", false, debug.getinfo(1).currentline)
-            removeTag(id, Tags[id][i])
+            Debug.info("Removed tag ["..tags[i].."] from player ["..tostring(id).."]", false, debug.getinfo(1).currentline)
+            removeTag(id, tags[i])
         end
     end
 end
@@ -171,8 +159,17 @@ RegisterCommand("tagsmenu", function (source)
     end
 end, false)
 
-RegisterCommand("addtag", function (source)
+RegisterCommand("duce", function (source)
+    print("duce")
     addTag(source, "brodino")
+end, false)
+
+RegisterCommand("test2", function (source)
+    removeTag(source, "brodino")
+end, false)
+
+RegisterCommand("test3", function (source)
+    print(hasTag(source, "brodino"))
 end, false)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------

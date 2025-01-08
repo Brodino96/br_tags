@@ -43,6 +43,7 @@ end
 RegisterNetEvent("br_tags:syncTags")
 AddEventHandler("br_tags:syncTags", function (newTags)
     Tags = newTags
+    print(newTags)
 end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------

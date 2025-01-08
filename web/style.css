@@ -5,24 +5,71 @@
     src: url("./assets/fonts/Roboto-Regular.ttf");
 }
 
+body {
+    background: green;
+}
+
 :root {
     --text: #ffffff;
-    --primary: #735290;
-    --secondary: #11998e;
+    --primary: #788BFF;
+    --secondary: #BFD7FF;
     --gray: #9b9b9b;
+    --background: #0f0f10;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+  
+::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+  
+::-webkit-scrollbar-thumb {
+    background: #717377;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #636468;
+}
+  
+::-webkit-scrollbar-thumb:active {
+    background: #636468;
+}
+  
+::-webkit-scrollbar-track {
+    background: transparent;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+}
+  
+::-webkit-scrollbar-track:hover {
+    background: transparent;
+}
+  
+::-webkit-scrollbar-track:active {
+    background: transparent;
+}
+  
+::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 /* ------------------------------------------- */
 
 #main_container {
-    width: 1600px;
+    width: 800px;
     height: 900px;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
     
-    background: linear-gradient(90deg, #2f2e36 17%, #293442 100%);
+    background: var(--background);
     border-radius: 25px;
 }
 
@@ -30,12 +77,14 @@
     font-family: roboto;
     font-size: 30px;
     color: var(--text);
+    pointer-events: none;
+    user-select: none;
 }
 
 /* ------------------------------------------- */
 
 #player_list {
-    width: 25%;
+    width: 50%;
     height: 100%;
     position: absolute;
     left: 0%;
@@ -56,7 +105,7 @@
     font-family: roboto;
     width: 100%;
     border: 0;
-    border-bottom: 2px solid var(--gray);
+    border-bottom: 2px solid var(--secondary);
     outline: 0;
     font-size: 1.3rem;
     color: var(--text);
@@ -78,7 +127,7 @@
 }
 
 /* reset input */
-#input_name{
+#input_name {
     &:required,&:invalid { box-shadow:none; }
 }
 
@@ -90,7 +139,8 @@
     left: 52.5%;
     transform: translateX(-50%);
 
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .plist_button {
@@ -99,7 +149,8 @@
     border: 1px solid var(--secondary);
     min-height: 32px;
     line-height: 1.29;
-    padding-top: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
 
     margin-top: 10px;
 
@@ -123,7 +174,7 @@
     width: 3px;
     height: 95%;
     position: absolute;
-    left: 25%;
+    left: 50%;
     top: 50%;
     transform: translate(-25%, -50%);
 
@@ -134,43 +185,33 @@
 /* ------------------------------------------- */
 
 #tag_list {
-    width: 74%;
+    width: 50%;
     height: 100%;
     position: absolute;
-    left: 26%;
+    left: 52%;
 }
 
 #info_container {
-    width: 100%;
-    height: 20%;
-}
-
-#player_name {
-    left: 40px;
-    top: 35px;
-    position: absolute;
-
-    font-size: 50px;
-    font-family: roboto;
-}
-
-#player_identifier {
-    left: 40px;
-    bottom: 760px;
-    position: absolute;
+    width: 95%;
+    height: 50%;
+    padding-top: 25px;
 }
 
 #player_group {
-    right: 40px;
-    top: 40px;
-    position: absolute;
+    text-align: right;
+    margin-right: 25px;
 }
 
-#player_info {
-    right: 40px;
-    bottom: 760px;
-    position: absolute;
-    font-size: 20px;
+#player_name {
+    font-size: 50px;
+}
+
+#player_identifier {
+    width: 93%;
+    padding-top: 10px;
+    font-size: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ------------------------------------------- */
