@@ -34,17 +34,25 @@ end
 
 ---Fetches the user info to be used in the menu
 ---@param identifier string The player identifier saved in the database
----@return table
+---@return table|nil
 function FetchUserInfo(identifier)
 
-    local serverId = ESX.GetPlayerFromIdentifier(identifier)
-    if Tags[serverId] then
-        return Tags[serverId]
-    end
-
-    local info = MySQL.single.await("SELECT `firstname`, `lastname`, `group`, `job`, `job_grade`, `dateofbirth`, `tags` FROM `users` WHERE `identifier` = ? LIMIT 1", {
+    local info = MySQL.single.await("SELECT `firstname`, `lastname`, `group`, `job`, `job_grade`, `dateofbirth`, `br_tags` FROM `users` WHERE `identifier` = ? LIMIT 1", {
         identifier
     })
 
+    if not info then
+        return Debug.error("Function 'FetchUserInfo': failed to get info from database", true, debug.getinfo(1).currentline)
+    end
+
+    info.identifier = identifier
     return info
+end
+
+function Search(name)
+    local values = MySQL.rawExecute.await(
+    "SELECT `firstname`, `lastname`, `identifier` FROM `users` WHERE `firstname` LIKE ? OR `lastname` LIKE ?", {
+        "%"..name[1].."%", "%"..(name[2] or name[1]).."%"
+    })
+    return values
 end
