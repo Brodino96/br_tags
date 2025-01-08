@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>br_tags</title>
     <link rel="stylesheet" href="style.css">
-    <script type="javascript" src="script.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <div id="main_container">
 
-        <div id="player_list"></div>
+        <div id="player_list">
+            <div id="input_container">
+                <input type="input" id="input_name" class="generic_text" placeholder="Search" name="name" id="name" onchange="search(this.value)" />
+            </div>
+
+            <div id="list_buttons">
+                <button id="test_button" class="plist_button" onclick="selectPlayer(this.id)">Christopher Simpson</button>
+            </div>
+        </div>
 
         <div id="divider"></div>
 
         <div id="tag_list">
-            <b id="player_name" class="generic_text">Player Name</b>
+            <div id="info_container">
+                <b id="player_name" class="generic_text">Player Name</b>
+                <b id="player_group" class="generic_text">group</b>
+                <b id="player_identifier" class="generic_text">identifier</b>
+                <b id="player_info" class="generic_text">birthday - job - grade</b>
+            </div>
         </div>
 
     </div>
