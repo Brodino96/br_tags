@@ -4,6 +4,10 @@ Tags = {}
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
+if not Config.keepRemovedTags then
+    TriggerServerEvent("br_tags:playerConnected")
+end
+
 ---Returns the list of all the player tags
 ---@return table
 local function fetchTags()

@@ -3,6 +3,7 @@
 
 ESX = exports["es_extended"]:getSharedObject()
 Tags = {}
+local nTags = #Config.allowedTags
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
@@ -10,7 +11,10 @@ Tags = {}
 ---@param tag string The tag's name
 ---@return boolean
 local function isTagAllowed(tag)
-    for i = 1, #Config.allowedTags do
+    if nTags <= 0 then
+        return true
+    end
+    for i = 1, nTags do
         if tag == Config.allowedTags[i] then
             return true
         end
@@ -65,10 +69,6 @@ end
 ---@param name string Tag's name
 ---@return nil
 local function removeTag(id, name)
-
-    if not isTagAllowed(name) then
-        return Debug.error("Function: 'removeTag': the tag ["..tostring(name).."] is not allowed", true, debug.getinfo(1).currentline)
-    end
 
     local playerId = math.tointeger(id)
 
@@ -138,6 +138,26 @@ end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
+local function init(serverId)
+    local id = math.tointeger(serverId)
+    Tags[id] = FetchTags(id)
+
+    for i = 1, #Tags[id] do
+        if not isTagAllowed(Tags[id][i]) then
+            ---@diagnostic disable-next-line: param-type-mismatch
+            Debug.info("Removed tag ["..Tags[id][i].."] from player ["..tostring(id).."]", false, debug.getinfo(1).currentline)
+            removeTag(id, Tags[id][i])
+        end
+    end
+end
+
+RegisterNetEvent("br_tags:playerConnected")
+AddEventHandler("br_tags:playerConnected", function ()
+    init(source)
+end)
+
+------------------------ # ------------------------ # ------------------------ # ------------------------
+
 ---Checks if the player is allowed to use commands
 ---@param id integer Player's id
 ---@return boolean
@@ -149,6 +169,10 @@ RegisterCommand("tagsmenu", function (source)
     if isAllowed(source) then
         TriggerClientEvent("br_tags:openMenu", source)
     end
+end, false)
+
+RegisterCommand("addtag", function (source)
+    addTag(source, "brodino")
 end, false)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
