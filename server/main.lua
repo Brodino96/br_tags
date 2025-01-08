@@ -112,7 +112,6 @@ end
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------ # ------------------------
 
----@diagnostic disable-next-line: undefined-global
 lib.callback.register("br_tags:getTags", function (source)
     return getTags(source)
 end)

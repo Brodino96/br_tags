@@ -7,7 +7,6 @@ Tags = {}
 ---Returns the list of all the player tags
 ---@return table
 local function fetchTags()
-    ---@diagnostic disable-next-line: undefined-global
     return lib.callback.await("br_tags:getTags")
 end
 
