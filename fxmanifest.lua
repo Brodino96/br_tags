@@ -8,6 +8,12 @@ description "Tag, you're it!"
 
 shared_scripts { "@ox_lib/init.lua", "config.lua", "shared.lua", }
 server_scripts { "@oxmysql/lib/MySQL.lua", "server/*", }
-client_scripts { "client.lua", }
+client_scripts { "client/*", }
+
+files {
+    "web/assetts/fonts/*",
+    "web/*"
+}
+ui_page "web/index.html"
 
 dependencies { "ox_lib", "es_extended", "oxmysql" }
