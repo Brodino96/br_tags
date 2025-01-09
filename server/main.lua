@@ -10,9 +10,6 @@ local nTags = #Config.allowedTags
 ---@param tag string The tag's name
 ---@return boolean
 local function isTagAllowed(tag)
-    if nTags <= 0 then
-        return true
-    end
     for i = 1, nTags do
         if tag == Config.allowedTags[i] then
             return true
@@ -111,6 +108,13 @@ end)
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 local function init(serverId)
+
+    AddTag(serverId, Config.defaultTag)
+
+    if Config.keepRemovedTags then
+        return
+    end
+
     local id = math.tointeger(serverId)
     local tags = FetchTags(ESX.GetPlayerFromId(id).getIdentifier())
 
@@ -127,6 +131,11 @@ RegisterNetEvent("br_tags:playerConnected")
 AddEventHandler("br_tags:playerConnected", function ()
     init(source)
 end)
+
+-- Runs every time the resources is started
+for _, i in pairs(GetPlayers()) do
+    init(i)
+end
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
