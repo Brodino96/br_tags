@@ -4,9 +4,10 @@ Tags = {}
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
-if not Config.keepRemovedTags then
+RegisterNetEvent("esx:playerLoaded")
+AddEventHandler("esx:playerLoaded", function ()
     TriggerServerEvent("br_tags:playerConnected")
-end
+end)
 
 ---Returns the list of all the player tags
 ---@return table
