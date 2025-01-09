@@ -1,3 +1,4 @@
+// -------------------------------------------------------------------------- \\
 
 let allowedTags = null
 let ownedTags = []
@@ -9,6 +10,8 @@ const tag_search = document.getElementById("tag_search")
 const item_list = document.getElementById("item_list")
 const htmlbody = document.getElementsByTagName("body")[0]
 
+// -------------------------------------------------------------------------- \\
+
 // Makes sure js has the config file
 fetch(`https://${GetParentResourceName()}/loaded`, {
     method: "POST",
@@ -16,21 +19,15 @@ fetch(`https://${GetParentResourceName()}/loaded`, {
     allowedTags = tags
 }).catch()
 
-//let loremipsum = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc."
-//allowedTags = loremipsum.split(" ")
-
 // Lua requests
 window.addEventListener("message", function(event) {
-    let data = event.data
-    switch (data.action) {
-        case "open":
-            showUi(data.players)
-            break
-    }
+    if (event.data.action == "open") { showUi(event.data.players) }
 })
 
+// -------------------------------------------------------------------------- \\
+
 function showUi(list) {
-    updateList(list)
+    renderPlayers(list)
     document.body.style.display = "block"
 }
 
@@ -44,23 +41,27 @@ document.addEventListener("keydown", function(e) {
     }
 })
 
+// -------------------------------------------------------------------------- \\
+// Playerlist
+
 function search(text) {
     if (text.trim().length == 0) {
         fetch(`https://${GetParentResourceName()}/onlineList`, {
             method: "POST",
         }).then(resp => resp.json()).then(function(list) {
-            updateList(list)
+            renderPlayers(list)
         })
     } else {
         fetch(`https://${GetParentResourceName()}/search`, {
             method: "POST",
             body: JSON.stringify({ name: text.split(" ")})
         }).then(resp => resp.json()).then(function(list) {
-            updateList(list)
+            renderPlayers(list)
         })
     }
 }
 
+// Triggered when selecting a player from the list in the left
 function selectPlayer(identifier) {
     fetch(`https://${GetParentResourceName()}/selectPlayer`, {
         method: "POST",
@@ -70,7 +71,8 @@ function selectPlayer(identifier) {
     })
 }
 
-function updateList(list) {
+// Updates the players list
+function renderPlayers(list) {
     list_buttons.innerHTML = ""
     for (let i = 0; i < Object.keys(list).length; i++) {
         list_buttons.innerHTML +=
@@ -78,6 +80,9 @@ function updateList(list) {
     }
 }
 
+// -------------------------------------------------------------------------- \\
+
+// Changes the text in the top right
 function displayInfo(info) {
     if (!info) { return }
     player_name.innerHTML = `${info.firstname} ${info.lastname}`
@@ -85,25 +90,23 @@ function displayInfo(info) {
     player_identifier.innerHTML = info.identifier
     player_identifier.title = info.identifier
     ownedTags = info.br_tags
-    renderItems(allowedTags)
+    renderTags(allowedTags)
 }
 
-function changed_check(item) {
-    fetch(`https://${GetParentResourceName()}/updateTags`, {
-        method: "POST",
-        body: JSON.stringify({
-            identifier: player_identifier.innerHTML,
-            tag: item.id,
-            action: item.checked
-        })
-    }).then(resp => resp.json()).then(function(newTags) {
-        ownedTags = newTags
-    })
+// Dinamically filters the tag list
+tag_search.addEventListener("input", (e) => {
+    const filteredItems = filterItems(e.target.value)
+    renderTags(filteredItems)
+})
+
+function filterItems(searchTerm) {
+    return allowedTags.filter(item => 
+        item.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 }
 
-// Tag search
-
-function renderItems(tagList) {
+// Updates the tags list
+function renderTags(tagList) {
     item_list.innerHTML = ""
     tagList.forEach(item => {
         const li = document.createElement("li")
@@ -126,13 +129,18 @@ function renderItems(tagList) {
     })
 }
 
-function filterItems(searchTerm) {
-    return allowedTags.filter(item => 
-        item.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+// Triggered when selecting a tag
+function changed_check(item) {
+    fetch(`https://${GetParentResourceName()}/updateTags`, {
+        method: "POST",
+        body: JSON.stringify({
+            identifier: player_identifier.innerHTML,
+            tag: item.id,
+            action: item.checked
+        })
+    }).then(resp => resp.json()).then(function(newTags) {
+        ownedTags = newTags
+    })
 }
 
-tag_search.addEventListener("input", (e) => {
-    const filteredItems = filterItems(e.target.value)
-    renderItems(filteredItems)
-})
+// -------------------------------------------------------------------------- \\
