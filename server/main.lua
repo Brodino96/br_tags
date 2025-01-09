@@ -29,7 +29,6 @@ end
 function SyncTags(playerId, tags)
     ---@diagnostic disable-next-line: param-type-mismatch
     TriggerClientEvent("br_tags:syncTags", playerId, tags)
-    print("aaaaaaaaa")
 end
 
 ---Adds a new tag the the specified player
