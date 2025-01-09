@@ -21,10 +21,6 @@ end
 ---@param name string Name of the tag
 local function hasTag(name)
 
-    if not Shared.type(name, "string", "hasTag") then
-        return
-    end
-
     if not Tags then
         Tags = fetchTags()
     end
@@ -43,7 +39,6 @@ end
 RegisterNetEvent("br_tags:syncTags")
 AddEventHandler("br_tags:syncTags", function (newTags)
     Tags = newTags
-    print(newTags)
 end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
