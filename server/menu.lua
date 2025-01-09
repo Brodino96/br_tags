@@ -4,10 +4,10 @@
 ---@param id integer Player's id
 ---@return boolean
 local function isAllowed(id)
-    return true
+    HasTag(id, Config.menu.tag)
 end
 
-RegisterCommand("tagsmenu", function (source)
+RegisterCommand(Config.menu.command, function (source)
     if isAllowed(source) then
         TriggerClientEvent("br_tags:openMenu", source)
     end
