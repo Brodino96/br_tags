@@ -7,12 +7,14 @@ local function openMenu()
         players = pList
     })
     SetNuiFocus(true, true)
+    TriggerScreenblurFadeIn(500)
 end
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 RegisterNUICallback("close", function (body, cb)
     cb(SetNuiFocus(false, false))
+    TriggerScreenblurFadeOut(500)
 end)
 
 RegisterNUICallback("selectPlayer", function (body, cb)
