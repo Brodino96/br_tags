@@ -32,7 +32,7 @@ end
 ---@return table|nil
 function FetchUserInfo(identifier)
 
-    local info = MySQL.single.await("SELECT `firstname`, `lastname`, `group`, `job`, `job_grade`, `dateofbirth`, `br_tags` FROM `users` WHERE `identifier` = ? LIMIT 1", {
+    local info = MySQL.single.await("SELECT `firstname`, `lastname`, `group`, `br_tags` FROM `users` WHERE `identifier` = ? LIMIT 1", {
         identifier
     })
 
