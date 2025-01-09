@@ -3,7 +3,7 @@ games { "gta5" }
 lua54 "yes"
 
 author "Brodino"
-version "1.0"
+version "1.1"
 description "Tag, you're it!"
 
 shared_scripts { "@ox_lib/init.lua", "config.lua", "shared.lua", }
