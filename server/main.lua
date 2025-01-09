@@ -83,7 +83,7 @@ end
 ---@param id integer? Player's id
 ---@param name string Tag's name
 ---@param identifier string? The player identifier
----@return boolean?
+---@return boolean
 function HasTag(id, name, identifier)
 
     if not identifier then

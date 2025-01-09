@@ -2,9 +2,9 @@
 
 ---Checks if the player is allowed to use commands
 ---@param id integer Player's id
----@return boolean
+---@return boolean?
 local function isAllowed(id)
-    HasTag(id, Config.menu.tag)
+    return HasTag(id, Config.menu.tag)
 end
 
 RegisterCommand(Config.menu.command, function (source)
