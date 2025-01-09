@@ -28,6 +28,10 @@ RegisterNUICallback("onlineList", function (body, cb)
     cb(lib.callback.await("br_tags:getOnlinePlayers"))
 end)
 
+RegisterNUICallback("loaded", function (body, cb)
+    cb(Config.allowedTags)
+end)
+
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 RegisterNetEvent("br_tags:openMenu")
