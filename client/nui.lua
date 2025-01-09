@@ -12,8 +12,7 @@ end
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 RegisterNUICallback("close", function (body, cb)
-    SetNuiFocus(false, false)
-    cb()
+    cb(SetNuiFocus(false, false))
 end)
 
 RegisterNUICallback("selectPlayer", function (body, cb)
@@ -30,6 +29,10 @@ end)
 
 RegisterNUICallback("loaded", function (body, cb)
     cb(Config.allowedTags)
+end)
+
+RegisterNUICallback("updateTags", function (body, cb)
+    cb(lib.callback.await("br_tags:changeTagsFromMenu", false, body))
 end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
