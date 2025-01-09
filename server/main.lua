@@ -36,15 +36,15 @@ end
 ---@param id integer? Player's id
 ---@param name string The tags name
 ---@return nil
-local function addTag(id, name)
+function AddTag(id, name)
 
     if not isTagAllowed(name) then
-        return Debug.error("Function: 'addTag': the tag ["..tostring(name).."] is not allowed", true, debug.getinfo(1).currentline)
+        return Debug.error("Function: 'AddTag': the tag ["..tostring(name).."] is not allowed", true, debug.getinfo(1).currentline)
     end
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(playerId, "number", "addTag") then
+    if not Shared.type(playerId, "number", "AddTag") then
         return
     end
 
@@ -52,7 +52,7 @@ local function addTag(id, name)
 
     for i = 1, #tags do
         if tags[i] == name then
-            return Debug.error("Function: 'addTag': player ["..tostring(playerId).."] already has the tag ["..name.."]", true, debug.getinfo(1).currentline)
+            return Debug.error("Function: 'AddTag': player ["..tostring(playerId).."] already has the tag ["..name.."]", true, debug.getinfo(1).currentline)
         end
     end
 
@@ -65,11 +65,11 @@ end
 ---@param id integer Player's id
 ---@param name string Tag's name
 ---@return nil
-local function removeTag(id, name)
+function RemoveTag(id, name)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(playerId, "number", "removeTag") then
+    if not Shared.type(playerId, "number", "RemoveTag") then
         return
     end
 
@@ -101,11 +101,11 @@ end
 ---@param id integer Player's id
 ---@param name string Tag's name
 ---@return boolean?
-local function hasTag(id, name)
+function HasTag(id, name)
 
     local playerId = math.tointeger(id)
 
-    if not Shared.type(name, "string", "hasTag") or not Shared.type(playerId, "number", "hasTag") then
+    if not Shared.type(name, "string", "HasTag") or not Shared.type(playerId, "number", "HasTag") then
         return
     end
 
@@ -134,7 +134,7 @@ local function init(serverId)
         if not isTagAllowed(tags[i]) then
             ---@diagnostic disable-next-line: param-type-mismatch
             Debug.info("Removed tag ["..tags[i].."] from player ["..tostring(id).."]", false, debug.getinfo(1).currentline)
-            removeTag(id, tags[i])
+            RemoveTag(id, tags[i])
         end
     end
 end
@@ -146,8 +146,8 @@ end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
-exports("has", hasTag)
-exports("add", addTag)
-exports("remove", removeTag)
+exports("has", HasTag)
+exports("add", AddTag)
+exports("remove", RemoveTag)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
