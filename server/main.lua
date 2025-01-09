@@ -36,7 +36,7 @@ end
 function AddTag(id, name, identifier)
 
     if not isTagAllowed(name) then
-        return Debug.error("Function: 'AddTag': the tag ["..tostring(name).."] is not allowed", true, debug.getinfo(1).currentline)
+        return
     end
 
     if not identifier then
@@ -47,7 +47,7 @@ function AddTag(id, name, identifier)
 
     for i = 1, #tags do
         if tags[i] == name then
-            return Debug.error("Function: 'AddTag': player ["..identifier.."] already has the tag ["..name.."]", true, debug.getinfo(1).currentline)
+            return
         end
     end
 
@@ -121,7 +121,6 @@ local function init(serverId)
     for i = 1, #tags do
         if not isTagAllowed(tags[i]) then
             ---@diagnostic disable-next-line: param-type-mismatch
-            Debug.info("Removed tag ["..tags[i].."] from player ["..tostring(id).."]", false, debug.getinfo(1).currentline)
             RemoveTag(id, tags[i])
         end
     end

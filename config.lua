@@ -22,7 +22,4 @@ Config = {
         command = "tagsmenu", -- command name to open the menu
         tag = "user" -- [IMPORTANT] the required tag to use the menu, change it a soon as possible
     },
-
-    -- Prints all the actions in the console (use when encountering a problem)
-    debug = true,
 }

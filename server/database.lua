@@ -6,7 +6,7 @@ function FetchTags(identifier)
     local tags = MySQL.scalar.await("SELECT `br_tags` FROM `users` WHERE `identifier` = ? LIMIT 1", { identifier })
 
     if not tags then
-        return Debug.error("Function 'FetchTags': unable to return the tags for id ["..identifier.."]", true, debug.getinfo(1).currentline)
+        return
     end
     return json.decode(tags)
 end
@@ -21,7 +21,7 @@ function UpdateTags(identifier, tags)
     })
 
     if not response then
-        return Debug.error("Function 'UpdateTags': no response was given from the database", true, debug.getinfo(1).currentline)
+        return
     end
 
     local xPlayer = ESX.GetPlayerFromIdentifier(identifier)
@@ -42,7 +42,7 @@ function FetchUserInfo(identifier)
     })
 
     if not info then
-        return Debug.error("Function 'FetchUserInfo': failed to get info from database", true, debug.getinfo(1).currentline)
+        return
     end
 
     info.identifier = identifier
