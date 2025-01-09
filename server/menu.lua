@@ -1,5 +1,20 @@
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
+---Checks if the player is allowed to use commands
+---@param id integer Player's id
+---@return boolean
+local function isAllowed(id)
+    return true
+end
+
+RegisterCommand("tagsmenu", function (source)
+    if isAllowed(source) then
+        TriggerClientEvent("br_tags:openMenu", source)
+    end
+end, false)
+
+------------------------ # ------------------------ # ------------------------ # ------------------------
+
 lib.callback.register("br_tags:getOnlinePlayers", function ()
     local arr = {}
     for _, xPlayer in ipairs(ESX.GetExtendedPlayers()) do
@@ -21,19 +36,15 @@ lib.callback.register("br_tags:searchPlayer", function (source, name)
     return arr
 end)
 
------------------------- # ------------------------ # ------------------------ # ------------------------
-
----Checks if the player is allowed to use commands
----@param id integer Player's id
----@return boolean
-local function isAllowed(id)
-    return true
-end
-
-RegisterCommand("tagsmenu", function (source)
-    if isAllowed(source) then
-        TriggerClientEvent("br_tags:openMenu", source)
+lib.callback.register("br_tags:changeTagsFromMenu", function (source, data)
+    if not isAllowed(source) then
+        return
     end
-end, false)
+    if data.action then
+        AddTag(nil, data.tag, data.identifier)
+    else
+        RemoveTag(nil, data.tag, data.identifier)
+    end
+end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
