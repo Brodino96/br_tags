@@ -45,6 +45,7 @@ lib.callback.register("br_tags:changeTagsFromMenu", function (source, data)
     else
         RemoveTag(nil, data.tag, data.identifier)
     end
+    return FetchTags(data.identifier)
 end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
