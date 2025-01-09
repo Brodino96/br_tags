@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>br_tags</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main_container">
+        
+        <div id="player_list">
+            <div id="input_container">
+                <input type="input" id="input_name" placeholder="Search" name="name" id="name" onchange="search(this.value)" />
+            </div>
+            
+            <div id="list_buttons">
+                <button id="placeholder button" class="plist_button" onclick="selectPlayer(this.id)">Placeholder name</button>
+            </div>
+        </div>
+        
+        <div id="divider"></div>
+        
+        <div id="tag_list">
+            
+            <div id="info_container">
+                <div id="player_group" class="generic_text">group</div>
+                <div id="player_name" class="generic_text">Player name</div>
+                <div id="player_identifier" class="generic_text" title="The player identifier">
+                    identifer
+                </div>
+            </div>
+            
+            <div id="tag_container">
+                <input type="text" id="tag_search" placeholder="Search tags...">
+                <ul id="item_list"></ul>
+            </div>
+        </div>
+        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
