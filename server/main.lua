@@ -35,45 +35,43 @@ end
 ---Adds a new tag the the specified player
 ---@param id integer? Player's id
 ---@param name string The tags name
+---@param identifier string? The player identifier
 ---@return nil
-function AddTag(id, name)
+function AddTag(id, name, identifier)
 
     if not isTagAllowed(name) then
         return Debug.error("Function: 'AddTag': the tag ["..tostring(name).."] is not allowed", true, debug.getinfo(1).currentline)
     end
 
-    local playerId = math.tointeger(id)
-
-    if not Shared.type(playerId, "number", "AddTag") then
-        return
+    if not identifier then
+        identifier = ESX.GetPlayerFromId(id).getIdentifier()
     end
 
-    local tags = FetchTags(playerId)
+    local tags = FetchTags(identifier)
 
     for i = 1, #tags do
         if tags[i] == name then
-            return Debug.error("Function: 'AddTag': player ["..tostring(playerId).."] already has the tag ["..name.."]", true, debug.getinfo(1).currentline)
+            return Debug.error("Function: 'AddTag': player ["..identifier.."] already has the tag ["..name.."]", true, debug.getinfo(1).currentline)
         end
     end
 
     tags[#tags+1] = name
 
-    UpdateTags(playerId, tags)
+    UpdateTags(identifier, tags)
 end
 
 ---Removes the specified tag from the specified id
----@param id integer Player's id
+---@param id integer? Player's id
 ---@param name string Tag's name
+---@param identifier string? The player identifier
 ---@return nil
-function RemoveTag(id, name)
+function RemoveTag(id, name, identifier)
 
-    local playerId = math.tointeger(id)
-
-    if not Shared.type(playerId, "number", "RemoveTag") then
-        return
+    if not identifier then
+        identifier = ESX.GetPlayerFromId(id).getIdentifier()
     end
 
-    local tags = FetchTags(playerId)
+    local tags = FetchTags(identifier)
     if tags == nil then return end
 
     for i = 1, #tags do
@@ -82,34 +80,21 @@ function RemoveTag(id, name)
         end
     end
 
-    UpdateTags(playerId, tags)
-end
-
----Returns the list of tag of the player
----@param id integer Player's id
----@return table?
-local function getTags(id)
-    local playerId = math.tointeger(id)
-
-    if not Shared.type(playerId, "number", "getTags") then
-        return
-    end
-    return FetchTags(playerId)
+    UpdateTags(identifier, tags)
 end
 
 ---Returns if the player has the specified tag
----@param id integer Player's id
+---@param id integer? Player's id
 ---@param name string Tag's name
+---@param identifier string? The player identifier
 ---@return boolean?
-function HasTag(id, name)
+function HasTag(id, name, identifier)
 
-    local playerId = math.tointeger(id)
-
-    if not Shared.type(name, "string", "HasTag") or not Shared.type(playerId, "number", "HasTag") then
-        return
+    if not identifier then
+        identifier = ESX.GetPlayerFromId(id).getIdentifier()
     end
 
-    local tags = FetchTags(playerId)
+    local tags = FetchTags(identifier)
     for i = 1, #tags do
         if tags[i] == name then
             return true
@@ -121,14 +106,14 @@ end
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 lib.callback.register("br_tags:getTags", function (source)
-    return getTags(source)
+    return FetchTags(ESX.GetPlayerFromId(source).getIdentifier())
 end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
 local function init(serverId)
     local id = math.tointeger(serverId)
-    local tags = FetchTags(id)
+    local tags = FetchTags(ESX.GetPlayerFromId(id).getIdentifier())
 
     for i = 1, #tags do
         if not isTagAllowed(tags[i]) then

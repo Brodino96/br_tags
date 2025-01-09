@@ -1,30 +1,35 @@
 ---Returns the list of all the tags the player has
----@param id integer? The serverId of the player
+---@param identifier string The player identifier
 ---@return table|nil
-function FetchTags(id)
+function FetchTags(identifier)
 
-    local tags = MySQL.scalar.await("SELECT `br_tags` FROM `users` WHERE `identifier` = ? LIMIT 1", { ESX.GetPlayerFromId(id).getIdentifier() })
+    local tags = MySQL.scalar.await("SELECT `br_tags` FROM `users` WHERE `identifier` = ? LIMIT 1", { identifier })
 
     if not tags then
-        return Debug.error("Function 'FetchTags': unable to return the tags for id ["..id.."]", true, debug.getinfo(1).currentline)
+        return Debug.error("Function 'FetchTags': unable to return the tags for id ["..identifier.."]", true, debug.getinfo(1).currentline)
     end
     return json.decode(tags)
 end
 
 ---Updated the database with the new tags
----@param playerId integer? Player's id
+---@param identifier string? Player's identifier
 ---@return nil
-function UpdateTags(playerId, tags)
+function UpdateTags(identifier, tags)
 
     local response = MySQL.update.await("UPDATE users SET br_tags = ? WHERE identifier = ?", {
-        json.encode(tags), ESX.GetPlayerFromId(playerId).getIdentifier()
+        json.encode(tags), identifier
     })
 
     if not response then
         return Debug.error("Function 'UpdateTags': no response was given from the database", true, debug.getinfo(1).currentline)
     end
 
-    SyncTags(playerId, tags)
+    local xPlayer = ESX.GetPlayerFromIdentifier(identifier)
+
+    if xPlayer.source then
+        SyncTags(xPlayer.source, tags)
+    end
+
 end
 
 ---Fetches the user info to be used in the menu
