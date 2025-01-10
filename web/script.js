@@ -28,6 +28,7 @@ window.addEventListener("message", function(event) {
 
 function showUi(list) {
     renderPlayers(list)
+    resetInfo()
     document.body.style.display = "block"
 }
 
@@ -91,6 +92,14 @@ function displayInfo(info) {
     player_identifier.title = info.identifier
     ownedTags = info.br_tags
     renderTags(allowedTags)
+}
+
+function resetInfo() {
+    player_name.innerHTML = "Player name"
+    player_group.innerHTML = "group"
+    player_identifier.innerHTML = "identifier"
+    player_identifier.title = "identifier"
+    item_list.innerHTML = ""
 }
 
 // Dinamically filters the tag list
