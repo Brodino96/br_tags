@@ -22,25 +22,16 @@ end
 ---@param name string Name of the tag
 local function hasTag(name)
 
-    if not Tags then
-        Tags = fetchTags()
-    end
+    local tags = fetchTags()
 
-    for i = 1, #Tags do
-        if Tags[i] == name then
+    for i = 1, #tags do
+        if tags[i] == name then
             return true
         end
     end
 
     return false
 end
-
------------------------- # ------------------------ # ------------------------ # ------------------------
-
-RegisterNetEvent("br_tags:syncTags")
-AddEventHandler("br_tags:syncTags", function (newTags)
-    Tags = newTags
-end)
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
