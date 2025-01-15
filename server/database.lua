@@ -23,13 +23,6 @@ function UpdateTags(identifier, tags)
     if not response then
         return
     end
-
-    local xPlayer = ESX.GetPlayerFromIdentifier(identifier)
-
-    if xPlayer.source then
-        SyncTags(xPlayer.source, tags)
-    end
-
 end
 
 ---Fetches the user info to be used in the menu

@@ -20,14 +20,6 @@ end
 
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
----Sends a new set of tags to the client
----@param playerId integer? Player's id
----@return nil
-function SyncTags(playerId, tags)
-    ---@diagnostic disable-next-line: param-type-mismatch
-    TriggerClientEvent("br_tags:syncTags", playerId, tags)
-end
-
 ---Adds a new tag the the specified player
 ---@param id integer? Player's id
 ---@param name string The tags name
