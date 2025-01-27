@@ -23,17 +23,14 @@ end
 ---Adds a new tag the the specified player
 ---@param id integer? Player's id
 ---@param name string The tags name
----@param identifier string? The player identifier
 ---@return nil
-function AddTag(id, name, identifier)
+function AddTag(id, name)
 
     if not isTagAllowed(name) then
         return
     end
 
-    if not identifier then
-        identifier = ESX.GetPlayerFromId(id).getIdentifier()
-    end
+    local identifier = ESX.GetPlayerFromId(id).getIdentifier()
 
     local tags = FetchTags(identifier)
 
@@ -51,13 +48,10 @@ end
 ---Removes the specified tag from the specified id
 ---@param id integer? Player's id
 ---@param name string Tag's name
----@param identifier string? The player identifier
 ---@return nil
-function RemoveTag(id, name, identifier)
+function RemoveTag(id, name)
 
-    if not identifier then
-        identifier = ESX.GetPlayerFromId(id).getIdentifier()
-    end
+    local identifier = ESX.GetPlayerFromId(id).getIdentifier()
 
     local tags = FetchTags(identifier)
     if tags == nil then return end
@@ -74,13 +68,10 @@ end
 ---Returns if the player has the specified tag
 ---@param id integer? Player's id
 ---@param name string Tag's name
----@param identifier string? The player identifier
 ---@return boolean
-function HasTag(id, name, identifier)
+function HasTag(id, name)
 
-    if not identifier then
-        identifier = ESX.GetPlayerFromId(id).getIdentifier()
-    end
+    local identifier = ESX.GetPlayerFromId(id).getIdentifier()
 
     local tags = FetchTags(identifier)
     for i = 1, #tags do
