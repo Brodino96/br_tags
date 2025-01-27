@@ -15,6 +15,7 @@ local function isTagAllowed(tag)
             return true
         end
     end
+    print("Tag: ["..tag.."] is not allowed")
     return false
 end
 
@@ -31,7 +32,6 @@ function AddTag(id, name)
     end
 
     local identifier = ESX.GetPlayerFromId(id).getIdentifier()
-
     local tags = FetchTags(identifier)
 
     for i = 1, #tags do
@@ -52,12 +52,12 @@ end
 function RemoveTag(id, name)
 
     local identifier = ESX.GetPlayerFromId(id).getIdentifier()
-
     local tags = FetchTags(identifier)
-    if tags == nil then return end
+    if json.encode(tags) == "[]" then return end
 
     for i = 1, #tags do
         if tags[i] == name then
+            ---@diagnostic disable-next-line: param-type-mismatch
             table.remove(tags, i)
         end
     end
@@ -72,8 +72,8 @@ end
 function HasTag(id, name)
 
     local identifier = ESX.GetPlayerFromId(id).getIdentifier()
-
     local tags = FetchTags(identifier)
+
     for i = 1, #tags do
         if tags[i] == name then
             return true
@@ -98,12 +98,11 @@ local function init(serverId)
         return
     end
 
-    local id = math.tointeger(serverId)
-    local tags = FetchTags(ESX.GetPlayerFromId(id).getIdentifier())
+    local tags = FetchTags(ESX.GetPlayerFromId(serverId).getIdentifier())
 
     for i = 1, #tags do
         if not isTagAllowed(tags[i]) then
-            ---@diagnostic disable-next-line: param-type-mismatch
+            ---@diagnostic disable-next-line: param-type-mismatch, undefined-global
             RemoveTag(id, tags[i])
         end
     end
