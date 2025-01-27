@@ -41,9 +41,9 @@ lib.callback.register("br_tags:changeTagsFromMenu", function (source, data)
         return
     end
     if data.action then
-        AddTag(nil, data.tag, data.identifier)
+        AddTag(ESX.GetPlayerFromIdentifier(data.identifier).source, data.tag)
     else
-        RemoveTag(nil, data.tag, data.identifier)
+        RemoveTag(ESX.GetPlayerFromIdentifier(data.identifier).source, data.tag)
     end
     return FetchTags(data.identifier)
 end)

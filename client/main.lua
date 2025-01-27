@@ -1,9 +1,5 @@
 ------------------------ # ------------------------ # ------------------------ # ------------------------
 
-Tags = {}
-
------------------------- # ------------------------ # ------------------------ # ------------------------
-
 RegisterNetEvent("esx:playerLoaded")
 AddEventHandler("esx:playerLoaded", function ()
     TriggerServerEvent("br_tags:playerConnected")

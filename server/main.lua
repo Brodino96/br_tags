@@ -15,6 +15,7 @@ local function isTagAllowed(tag)
             return true
         end
     end
+    print("Tag: ["..tag.."] is not allowed")
     return false
 end
 
@@ -23,18 +24,14 @@ end
 ---Adds a new tag the the specified player
 ---@param id integer? Player's id
 ---@param name string The tags name
----@param identifier string? The player identifier
 ---@return nil
-function AddTag(id, name, identifier)
+function AddTag(id, name)
 
     if not isTagAllowed(name) then
         return
     end
 
-    if not identifier then
-        identifier = ESX.GetPlayerFromId(id).getIdentifier()
-    end
-
+    local identifier = ESX.GetPlayerFromId(id).getIdentifier()
     local tags = FetchTags(identifier)
 
     for i = 1, #tags do
@@ -51,19 +48,16 @@ end
 ---Removes the specified tag from the specified id
 ---@param id integer? Player's id
 ---@param name string Tag's name
----@param identifier string? The player identifier
 ---@return nil
-function RemoveTag(id, name, identifier)
+function RemoveTag(id, name)
 
-    if not identifier then
-        identifier = ESX.GetPlayerFromId(id).getIdentifier()
-    end
-
+    local identifier = ESX.GetPlayerFromId(id).getIdentifier()
     local tags = FetchTags(identifier)
-    if tags == nil then return end
+    if json.encode(tags) == "[]" then return end
 
     for i = 1, #tags do
         if tags[i] == name then
+            ---@diagnostic disable-next-line: param-type-mismatch
             table.remove(tags, i)
         end
     end
@@ -74,15 +68,12 @@ end
 ---Returns if the player has the specified tag
 ---@param id integer? Player's id
 ---@param name string Tag's name
----@param identifier string? The player identifier
 ---@return boolean
-function HasTag(id, name, identifier)
+function HasTag(id, name)
 
-    if not identifier then
-        identifier = ESX.GetPlayerFromId(id).getIdentifier()
-    end
-
+    local identifier = ESX.GetPlayerFromId(id).getIdentifier()
     local tags = FetchTags(identifier)
+
     for i = 1, #tags do
         if tags[i] == name then
             return true
@@ -107,12 +98,11 @@ local function init(serverId)
         return
     end
 
-    local id = math.tointeger(serverId)
-    local tags = FetchTags(ESX.GetPlayerFromId(id).getIdentifier())
+    local tags = FetchTags(ESX.GetPlayerFromId(serverId).getIdentifier())
 
     for i = 1, #tags do
         if not isTagAllowed(tags[i]) then
-            ---@diagnostic disable-next-line: param-type-mismatch
+            ---@diagnostic disable-next-line: param-type-mismatch, undefined-global
             RemoveTag(id, tags[i])
         end
     end
